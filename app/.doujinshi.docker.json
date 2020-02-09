@@ -1,0 +1,42 @@
+{
+  "api": "",
+  "paths": {
+    "in": "/in",
+    "out": "/out",
+    "fail": "/fail"
+  },
+
+  "db_type": "mysql",
+  "db_host": "db",
+  "db_user": "root",
+  "db_pass": "root",
+  "db_database": "doujins",
+  
+  "ignore_greyscale": false,
+  "open_cmd": "open",
+  "threshold": 75,
+  "use_source": false,
+  "min_threshold": 0,
+
+  "patterns": {
+  	"default": "%type/%parody/%title [%circle, %pages]",
+  	"同人誌": "%type/%parody/%title [%circle, %pages]",
+  	"漫画":  "%type/%author/%title [%date, %pages]",
+  	"雑誌": "%type/%collections/%title [%date, %pages]"
+  },
+
+  "langs": {
+    "preferred": "en",
+    "exceptions": {
+      "jp": ["type", "author", "publisher"]
+    }
+  },
+  "replace": {
+    "Comic Market": "C",
+    "Card Captor Sakura": "CCS",
+    "Ore no Imouto ga Konna ni Kawaii Wake ga Nai": "Ore no Imouto",
+    " (series)": null,
+    " (game)": null
+  }
+}
+

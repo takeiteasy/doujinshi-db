@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>doujinshi-db</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="shortcut icon" href="/static/favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="/static/index.css">
+		<script src="/static/index.js"></script>
+	</head>
+	<body>
+		<div id="menu">
+			<div class="title"><h1 id="title">同人誌DB</h1></div>
+			<div class="select_box option_box">
+				<select id="option_select">
+					<option value="0" selected hidden>Select an Option...</option>
+					<option value="convention" {% if option=='convention' %}selected{% endif %}>Convention</option>
+					<option value="publisher" {% if option=='publisher' %}selected{% endif %}>Publisher</option>
+					<option value="collections" {% if option=='collections' %}selected{% endif %}>Collections</option>
+					<option value="type" {% if option=='type' %}selected{% endif %}>Type</option>
+					<option value="circle" {% if option=='circle' %}selected{% endif %}>Circle</option>
+					<option value="author" {% if option=='author' %}selected{% endif %}>Author</option>
+					<option value="parody" {% if option=='parody' %}selected{% endif %}>Parody</option>
+					<option value="imprint" {% if option=='imprint' %}selected{% endif %}>Imprint</option>
+					<option value="genre" {% if option=='genre' %}selected{% endif %}>Genre</option>
+					<option value="character" {% if option=='character' %}selected{% endif %}>Character</option>
+					<option value="contents" {% if option=='contents' %}selected{% endif %}>Contents</option>
+					<option value="rating" {% if option=='rating' %}selected{% endif %}>Rating</option>
+				</select>
+			</div>
+			<div class="select_box tag_box">
+				<select id="tag_select">
+					<option value="0" selected hidden>Select a category...</option>
+					{% for item in tags %}
+						<option value="{{ item }}" {% if item==tag %}selected{% endif %}>{{ item }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="search_wrap">
+				<div class="autocomplete">
+					<form id="search_form" action="/" method="post">
+						<input id="search" type="text" placeholder="Search...">
+						<input id="search_json" name="data" hidden>
+						<input id="search_one" name="one" value="no" hidden>
+						<div class="autocomplete-items" id="autocomplete-list"></div>
+					</form>
+				</div>
+			</div>
+			<div id="log_button"><div id="rename_queue_len"></div></div>
+		</div>
+		<div id="main">
+			<div class="masonry">
+				{% for item in doujins %}
+				<div class="item" id="{{ item.bid }}"><p hidden>{{ item|tojson|safe }}</p><img src='/static/loading.gif' /><div class='desc'><b>{{ item.type }}</b> | <span id='desc_title'>{{ item.title }}, {{ item.pages }} pages</span></div></div>
+				{% else %}
+				<img src="/static/mystery.png" id="mystery" />
+				{% endfor %}
+			</div>
+		</div>
+		<div class="overlay" id="info_overlay">
+			<div id="info">
+				<div id="info_table">
+					<table id="info_table_table">
+						<tbody>
+							<tr>
+								<th id="author_key">Author</th>
+								<td id="author_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="bid_key">BID</th>
+								<td id="bid_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="character_key">Character</th>
+								<td id="character_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="circle_key">Circle</th>
+								<td id="circle_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="collections_key">Collections</th>
+								<td id="collections_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="contents_key">Contents</th>
+								<td id="contents_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="convention_key">Convention</th>
+								<td id="convention_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="date_key">Date</th>
+								<td id="date_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="genre_key">Genre</th>
+								<td id="genre_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="imprint_key">Imprint</th>
+								<td id="imprint_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="pages_key">Pages</th>
+								<td id="pages_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="parody_key">Parody</th>
+								<td id="parody_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="path_key">Path</th>
+								<td id="path_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="publisher_key">Publisher</th>
+								<td id="publisher_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="rating_key">Rating</th>
+								<td id="rating_val">
+									<select id="rating_val_select">
+										<option value="0" selected>No Rating</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+									</select>
+								</td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="title_key">Title</th>
+								<td id="title_val"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<th id="type_key">Type</th>
+								<td id="type_val"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="button" id="button_web">Open in Browser</div>
+				<div class="button" id="button_cli">Open with Program</div>
+				<div id="info_cover">
+					<div class="delete" id="delete_doujin"></div>
+				</div>
+			</div>
+		</div>
+		<div class="overlay" id="rename_overlay">
+			<div class="rename_me" id="a">
+				<div class="rename_tag">Original - Click to Skip</div>
+			</div>
+			<div class="rename_me" id="b">
+				<div class="rename_tag"></div>
+			</div>
+			<div class="rename_me" id="c">
+				<div class="rename_tag"></div>
+			</div>
+			<div class="rename_me" id="d">
+				<div class="rename_tag"></div>
+			</div>
+			<div class="delete" id="cancel_rename"></div>
+		</div>
+		<div class="overlay" id="reader_overlay">
+			<div class="nav_button" id="cancel"></div>
+			<div id="controls">
+				<div class="nav_button" id="left"></div>
+				<div id="pages"></div>
+				<div class="nav_button" id="right"></div>
+			</div>
+			<div id="progress_bar">
+				<div id="progress">
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

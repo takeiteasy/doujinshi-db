@@ -1,0 +1,30 @@
+img {
+	border: 0;
+}
+
+html, body {
+	font-family: '.SFNSText-Regular', 'San Francisco Text', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
+	overflow: hidden;
+	height: 100%;
+	background: #242424;
+	color: #f0f0f0;
+}
+
+h1 {
+	text-align: center;
+}
+
+h2 {
+	text-align: center;
+}
+
+h3 {
+	text-align: center;
+}
+
+#mystery {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -60%);
+}

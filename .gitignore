@@ -1,0 +1,7 @@
+test/
+.doujinshi.json
+.doujinshi.json.bak
+docker-compose.yml
+.DS_Store
+*.pyc
+__pycache__/

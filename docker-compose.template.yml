@@ -1,0 +1,27 @@
+version: "3"
+services:
+  app:
+    build: ./app
+    links:
+      - db
+    ports:
+      - "1488:5000"
+    volumes:
+      - PATH:/in
+      - PATH:/out
+      - PATH:/fail
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root 
+      MYSQL_DATABASE: doujins
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    command: --init-file /db/init.sql --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    volumes:
+        - ./db/docker_mysql_init.sql:/db/init.sql
+        - ./db:/docker-entrypoint-initdb.d/:ro
